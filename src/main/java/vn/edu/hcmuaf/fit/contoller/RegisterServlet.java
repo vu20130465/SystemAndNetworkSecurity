@@ -1,6 +1,7 @@
 package vn.edu.hcmuaf.fit.contoller;
 
 import vn.edu.hcmuaf.fit.service.AccountService;
+import vn.edu.hcmuaf.fit.service.Hash;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -68,7 +69,7 @@ public class RegisterServlet extends HttpServlet {
                 errors.put("pwconfirm", "Mật khẩu bạn điền không trùng khớp");
             }
             if (errors.isEmpty()) {
-                new AccountService().register(username, password, lastname, firstname, phone, email, address);
+                new AccountService().register(username, Hash.hashPassword(password), lastname, firstname, phone, email, address);
                 PrintWriter pw = response.getWriter();
                 pw.println("<script type=\"text/javascript\">");
                 pw.println("alert('Đăng ký thành công');window.location.href = 'login'");
@@ -81,6 +82,8 @@ public class RegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

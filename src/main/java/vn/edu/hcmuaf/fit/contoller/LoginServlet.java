@@ -1,6 +1,7 @@
 package vn.edu.hcmuaf.fit.contoller;
 
 import vn.edu.hcmuaf.fit.service.AccountService;
+import vn.edu.hcmuaf.fit.service.Hash;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -19,7 +20,12 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String password = null;
+        try {
+            password = Hash.hashPassword(request.getParameter("password"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         try {
             boolean isLogin = new AccountService().login(username, password);
             if (isLogin) {
