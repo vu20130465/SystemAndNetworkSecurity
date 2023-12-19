@@ -19,7 +19,6 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         getServletContext().setAttribute("currentPage", "home");
-
         List<Product> list = new ProductService().getAllProduct();
         request.setAttribute("listAllProduct", list);
         request.getRequestDispatcher("index.jsp").forward(request, response);

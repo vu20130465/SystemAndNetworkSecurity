@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản Khách hàng</title>
+    <link rel="stylesheet" href="css/style-acc-info.css">
+</head>
+<body>
+
+<header>
+    <h1>Tài khoản Khách hàng</h1>
+</header>
+
+<div class="tabs">
+    <div id="account-details-tab" class="tab active" onclick="showTab('account-details')">Thông tin tài khoản</div>
+    <div id="order-list-tab" class="tab" onclick="showTab('order-list')">Danh sách đơn hàng</div>
+    <div id="success-orders-tab" class="tab" onclick="showTab('success-orders')">Đơn hàng đã giao thành công</div>
+    <div id="key-management-tab" class="tab" onclick="showTab('key-management')">Quản lý Public Key</div>
+</div>
+
+<section>
+    <div class="account-details" id="account-details" style="display: block;">
+        <h2>Thông tin tài khoản</h2>
+        <div class="avatar-container">
+            <img src="avatar.jpg" alt="Avatar" class="avatar">
+        </div>
+
+        <form>
+            <label for="name">Họ và tên:</label>
+            <input type="text" id="name" name="name" value="Nguyễn Văn A" readonly>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="example@email.com" readonly>
+
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" name="phone" value="0123456789" readonly>
+
+            <label for="address">Địa chỉ:</label>
+            <input type="text" id="address" name="address" value="Địa chỉ của khách hàng" readonly>
+
+            <button type="button" onclick="editAccount()">Sửa thông tin</button>
+            <button type="button" onclick="changePassword()">Đổi mật khẩu</button>
+        </form>
+    </div>
+
+    <div class="order-list" id="order-list">
+        <h2>Danh sách đơn hàng</h2>
+        <!-- Danh sách đơn hàng -->
+    </div>
+
+    <div class="success-orders" id="success-orders">
+        <h2>Đơn hàng đã giao thành công</h2>
+        <!-- Danh sách đơn hàng đã giao thành công -->
+    </div>
+
+    <div class="key-management" id="key-management">
+        <h2>Quản lý Public Key</h2>
+        <form>
+            <label for="public-key">Public Key:</label>
+            <input type="text" id="public-key" name="public-key" value="Public Key của khách hàng" readonly>
+
+            <button type="button" onclick="reportLostKey()">Báo mất key</button>
+            <button type="button" onclick="updateKey()">Cập nhật key mới</button>
+        </form>
+    </div>
+</section>
+
+<script src="js/script-acc-info.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+</body>
+</html>

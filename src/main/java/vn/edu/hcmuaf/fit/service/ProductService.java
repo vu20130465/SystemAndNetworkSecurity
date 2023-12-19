@@ -51,7 +51,7 @@ public class ProductService {
                 int discountedPrice = resultSet.getInt("discounted_price");
                 String category = resultSet.getString("category");
                 String description = resultSet.getString("description");
-                List<String> images = getListImage(id);
+                ArrayList<String> images = getListImage(id);
                 String status = resultSet.getString("status");
                 int quantity = resultSet.getInt("quantity");
 
@@ -65,8 +65,8 @@ public class ProductService {
         }
     }
 
-    public List<Product> getAllProduct() {
-        List<Product> list = new ArrayList<>();
+    public ArrayList<Product> getAllProduct() {
+        ArrayList<Product> list = new ArrayList<>();
         String query = "SELECT product.id, product.name, price, category.`name` as category, description, status, discounted_price, quantity FROM product INNER JOIN category on product.category_id = category.id ORDER BY price ASC";
         try {
             conn = DBConnect.getInstance().getConnection();
@@ -85,8 +85,8 @@ public class ProductService {
         return list;
     }
 
-    public List<String> getListImage(int idProduct) {
-        List<String> list = new ArrayList<>();
+    public ArrayList<String> getListImage(int idProduct) {
+        ArrayList<String> list = new ArrayList<>();
         String query = "SELECT image.url FROM image WHERE product_id = ?";
         try {
             conn = DBConnect.getInstance().getConnection();

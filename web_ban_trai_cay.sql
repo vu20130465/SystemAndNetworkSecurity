@@ -13,6 +13,8 @@
 
  Date: 21/11/2023 23:56:45
 */
+CREATE DATABASE web_ban_trai_cay;
+USE web_ban_trai_cay;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
