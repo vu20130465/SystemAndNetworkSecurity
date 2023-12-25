@@ -119,5 +119,8 @@
 <script src="js/contact-form-script.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/myjs.js"></script>
+<script src="https://unpkg.com/node-forge@1.0.0/dist/forge.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="js/script-acc-info.js"></script>
 </body>
 </html>

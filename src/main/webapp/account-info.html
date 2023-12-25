@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tài khoản Khách hàng</title>
     <link rel="stylesheet" href="css/style-acc-info.css">
+
+    <script src="https://unpkg.com/node-forge@1.0.0/dist/forge.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
@@ -16,7 +20,7 @@
     <div id="account-details-tab" class="tab active" onclick="showTab('account-details')">Thông tin tài khoản</div>
     <div id="order-list-tab" class="tab" onclick="showTab('order-list')">Danh sách đơn hàng</div>
     <div id="success-orders-tab" class="tab" onclick="showTab('success-orders')">Đơn hàng đã giao thành công</div>
-    <div id="key-management-tab" class="tab" onclick="showTab('key-management')">Quản lý Public Key</div>
+    <div id="key-management-tab" class="tab" onclick="showTab('key-management')">Quản lý Key</div>
 </div>
 
 <section>
@@ -55,11 +59,14 @@
     </div>
 
     <div class="key-management" id="key-management">
-        <h2>Quản lý Public Key</h2>
+        <h2>Quản lý Key</h2>
         <form>
+            <label for="private-key">Private Key:</label>
+            <input type="text" id="private-key" name="private-key" placeholder="Private Key của khách hàng">
             <label for="public-key">Public Key:</label>
-            <input type="text" id="public-key" name="public-key" value="Public Key của khách hàng" readonly>
+            <input type="text" id="public-key" name="public-key" placeholder="Public Key của khách hàng" readonly>
 
+            <button type="button" onclick="createKey()">Tạo key</button>
             <button type="button" onclick="reportLostKey()">Báo mất key</button>
             <button type="button" onclick="updateKey()">Cập nhật key mới</button>
         </form>
@@ -67,7 +74,6 @@
 </section>
 
 <script src="js/script-acc-info.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 </body>
 </html>

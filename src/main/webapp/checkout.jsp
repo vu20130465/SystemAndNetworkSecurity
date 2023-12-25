@@ -232,8 +232,7 @@
                     </div>
                     <button class="col-12 d-flex shopping-box" style="border: none;background: none;" type="submit">
                         <a
-                                class="ml-auto btn hvr-hover">Đặt
-                            hàng</a></button>
+                                class="ml-auto btn hvr-hover">Đặt hàng</a></button>
                 </div>
             </div>
         </form>

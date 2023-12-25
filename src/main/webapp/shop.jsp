@@ -49,19 +49,22 @@
                                         <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4 product-cell">
                                             <div class="products-single fix">
                                                 <div class="box-img-hover" style="height: 255px">
-
                                                     <div class="type-lb">
                                                         <c:if test="${pro.getStatus() != null||pro.getStatus() != ''}">
                                                             <p class="status-param sale"> ${pro.getStatus()}
                                                             </p></c:if>
                                                     </div>
-
                                                     <img src="${pro.getImages().get(0)}" class="img-fluid image-param"
                                                          alt="Image">
                                                     <div class="mask-icon">
                                                         <a class="cart" style="cursor: pointer"
                                                            onclick="updateCart('${pro.getId()}');
-                                                           <c:if test="${username!=null}">alert('Đã thêm sản phẩm');</c:if>
+                                                           <c:if test="${username!=null}">Swal.fire({
+                                                                                            icon: 'success',
+                                                                                            title: 'Đã thêm sản phẩm',
+                                                                                            showConfirmButton: false,
+                                                                                            timer: 1000
+                                                                                                    });</c:if>
                                                            <c:if test="${username==null}">alert('Vui lòng đăng nhập trước');
                                                                    window.location.href='login'</c:if>">Thêm vào giỏ
                                                             </a>

@@ -14,6 +14,7 @@ import java.sql.SQLException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        getServletContext().setAttribute("currentPage", "login");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -36,6 +37,7 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("username", username);
                 request.setAttribute("errorLogin", true);
                 request.getRequestDispatcher("login.jsp").forward(request, response);
+                getServletContext().setAttribute("currentPage", "home");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

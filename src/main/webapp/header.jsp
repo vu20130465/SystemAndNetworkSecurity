@@ -22,6 +22,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
 
 </head>
 <body style="margin: 0">
@@ -120,8 +121,8 @@
                                     <li><a href="register"><strong>Đăng ký</strong></a></li>
                                 </c:when>
                                 <c:otherwise>
+                                    <li><a href="account-info"><strong>Tài khoản</strong></a></li>
                                     <li><a href="cart"><strong>Giỏ hàng</strong></a></li>
-<%--                                    <li><a href="#"><strong>Tài khoản</strong></a></li>--%>
                                     <li><a href="logout"><strong>Đăng xuất</strong></a></li>
                                 </c:otherwise>
                             </c:choose>
@@ -145,7 +146,7 @@
                                                       value="${item.getProduct().getDiscountedPrice()}"/></c:if>
                         <li>
                             <a class="photo"><img src="${item.getProduct().getImages()[0]}" class="cart-thumb" alt=""/></a>
-                            <h6><a href="#">${item.getProduct().getName()} </a></h6>
+                            <h6><a href="product-detail?id=${item.getProduct().getId()}">${item.getProduct().getName()} </a></h6>
                             <p>${item.getQuantity()}x - <span class="price">${price}</span></p>
                         </li>
                     </c:forEach>

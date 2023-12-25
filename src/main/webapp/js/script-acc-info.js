@@ -24,13 +24,23 @@ function changePassword() {
     // Thêm logic để chuyển sang trang đổi mật khẩu
     alert("Chuyển sang trang đổi mật khẩu");
 }
+function createKey() {
+    // Thêm logic để tạo key
+    var rsa = forge.pki.rsa;
+    var keyPair = rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
 
+    $('#private-key').val(forge.pki.privateKeyToPem(keyPair.privateKey));
+    $('#public-key').val(forge.pki.publicKeyToPem(keyPair.publicKey));
+    Swal.fire("Tạo key thành công");
+}
 function reportLostKey() {
     // Thêm logic để báo mất key
-    alert("Báo mất key");
+    $.post('account-info/report-lost-key');
+    Swal.fire("Đã báo mất key");
 }
 
 function updateKey() {
     // Thêm logic để cập nhật key mới
-    alert("Cập nhật key mới");
+    $.post('account-info/key-manager?key='+$('#public-key').val());
+    Swal.fire("Cập nhật key mới");
 }
