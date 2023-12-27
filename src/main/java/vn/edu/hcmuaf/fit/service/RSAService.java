@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
-public class RSA {
+public class RSAService {
     KeyPair keyPair;
     PublicKey publicKey;
     PrivateKey privateKey;
@@ -69,6 +69,7 @@ public class RSA {
         is.close();
     }
 
+
     public String decrypt(String data, boolean isPrivateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, isPrivateKey ? privateKey : publicKey);
@@ -88,9 +89,9 @@ public class RSA {
         String phone = st.nextToken();
         String email = st.nextToken();
         Date date = new Date(Long.parseLong(st.nextToken()));
-        int status_id = Integer.parseInt(st.nextToken());
+        String status = st.nextToken();
         int total = Integer.parseInt(st.nextToken());
-        return new Order(id, username, address, phone, email, date, status_id, total);
+        return new Order(id, username, address, phone, email, date, status, total);
     }
     public void fileDecrypt(String inputPath, boolean isPrivateKey) throws Exception {
         DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(Paths.get(inputPath))));
@@ -150,11 +151,11 @@ public class RSA {
     }
 
     public static void main(String[] args) throws Exception {
-        RSA rsa = new RSA();
+        RSAService rsa = new RSAService();
         rsa.genKey(3072);
 //        System.out.println(rsa.exportPublicKey());
 //        System.out.println(rsa.exportPrivateKey());
-        Order o = new Order(1, "test", "test", "test", "test", new Date(System.currentTimeMillis()), 1, 1);
+        Order o = new Order(1, "test", "test", "test", "test", new Date(System.currentTimeMillis()), "Đang xử lý", 1);
         String s = rsa.encryptObject(o, true);
         System.out.println(s);
         Order f1 = rsa.decryptObject(s, true);

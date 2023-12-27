@@ -28,7 +28,7 @@
             color: #333;
         }
         .account-details, .order-list, .success-orders, .key-management {
-            width: 50%;
+            width: 70%;
             margin: auto;
             background-color: #fff;
             padding: 20px;
@@ -71,13 +71,17 @@
             object-fit: cover;
             border-radius: 50%;
         }
-
+        .order-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
 <div class="tabs">
     <div id="account-details-tab" class="tab active" onclick="showTab('account-details')">Thông tin tài khoản</div>
-    <div id="order-list-tab" class="tab" onclick="showTab('order-list')">Danh sách đơn hàng</div>
+    <div id="order-list-tab" class="tab" onclick="showTab('order-list');showOrderList('${username}')">Danh sách đơn hàng</div>
     <div id="success-orders-tab" class="tab" onclick="showTab('success-orders')">Đơn hàng đã giao thành công</div>
     <div id="key-management-tab" class="tab" onclick="showTab('key-management')">Quản lý Key</div>
 </div>
@@ -113,6 +117,23 @@
 
     <div class="order-list" id="order-list">
         <h2>Danh sách đơn hàng</h2>
+        <table id="order-table" style="width: 100%">
+            <thead>
+            <tr>
+                <th style="width: 5%">STT</th>
+                <th style="width: 5%">ID</th>
+                <th style="width: 10%">Phone</th>
+                <th style="width: 30%">Address</th>
+                <th style="width: 20%">Date create</th>
+                <th style="width: 10%">Total</th>
+                <th style="width: 20%">Status</th>
+            </tr>
+            </thead>
+            <tbody id="order-table-value">
+            <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+            </tbody>
+        </table>
+
         <!-- Danh sách đơn hàng -->
     </div>
 

@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.service;
 
 import vn.edu.hcmuaf.fit.db.DBConnect;
 import vn.edu.hcmuaf.fit.model.CartItem;
+import vn.edu.hcmuaf.fit.model.Order;
 import vn.edu.hcmuaf.fit.model.Product;
 
 import java.sql.Connection;
@@ -67,7 +68,33 @@ public class OrderService {
         }
         return true;
     }
-
+// Lấy danh sách đơn hàng của một người dùng
+    public ArrayList<Order> getListOrder(String username) {
+        ArrayList<Order> list = new ArrayList<>();
+        String query = "SELECT * FROM `orders` WHERE username = ? ORDER BY id DESC";
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement(query);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(new Order(
+                        resultSet.getInt("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("address"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("email"),
+                        resultSet.getDate("date_create"),
+                        resultSet.getString("status"),
+                        resultSet.getInt("total")
+                        ));
+            }
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
     public static void main(String[] args) {
         new OrderService().createOrder("vu", "a", "b", "c", "d", "e","Đang xử lý", 25000);
     }
