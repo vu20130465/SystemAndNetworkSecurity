@@ -1,13 +1,12 @@
 package vn.edu.hcmuaf.fit.contoller;
 
 import vn.edu.hcmuaf.fit.service.AccountService;
-import vn.edu.hcmuaf.fit.service.Hash;
+import vn.edu.hcmuaf.fit.service.HashService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet(name = "login", value = "/login")
@@ -23,7 +22,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = null;
         try {
-            password = Hash.hashPassword(request.getParameter("password"));
+            password = HashService.hashPassword(request.getParameter("password"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

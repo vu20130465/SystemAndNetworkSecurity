@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 
-public class Hash {
+public class HashService {
     public static String hash(String data, String algorithm) throws Exception {
         MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] output = md.digest(data.getBytes());

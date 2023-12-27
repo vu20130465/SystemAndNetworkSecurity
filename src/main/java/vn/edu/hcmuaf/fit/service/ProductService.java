@@ -119,4 +119,18 @@ public class ProductService {
         }
         return 0;
     }
+    public void updateQuantity(int idP, int quantitySold){
+        String query = "UPDATE product SET quantity = ? WHERE id = ?";
+        int quantity = getMaxQuantityOfProduct(idP) - quantitySold;
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, quantity);
+            statement.setInt(2, idP);
+            statement.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

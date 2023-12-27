@@ -1,7 +1,6 @@
 package vn.edu.hcmuaf.fit.contoller;
 
 import vn.edu.hcmuaf.fit.model.CartItem;
-import vn.edu.hcmuaf.fit.service.BillService;
 import vn.edu.hcmuaf.fit.service.CartService;
 
 import javax.servlet.*;
