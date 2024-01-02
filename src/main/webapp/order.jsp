@@ -61,6 +61,11 @@
                         <input name="address" class="form-control" id="address" placeholder="" required>
                         <div class="invalid-feedback"> Vui lòng nhập địa chỉ giao hàng của bạn.</div>
                     </div>
+                    <div class="mb-3">
+                        <label for="address">Private Key *</label>
+                        <input name="privateKey" class="form-control" id="privateKey" placeholder="" required>
+                        <div class="invalid-feedback"> Vui lòng nhập private key của bạn.</div>
+                    </div>
 <%--                    <div class="col-md-5 mb-3">--%>
 <%--                        <label for="province">Tỉnh *</label>--%>
 <%--                        <select class="wide w-100" id="province" name="province">--%>
@@ -240,6 +245,7 @@
         </form>
     </div>
 </div>
+
 <script>
     document.getElementById('total').innerHTML = ${totals} + 25000;
     document.getElementById('selectedShippingOption').value = 25000;

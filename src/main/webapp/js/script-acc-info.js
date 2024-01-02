@@ -35,7 +35,7 @@ function showOrderList(username) {
                     row.append($('<td>').text(order.address)); // Address
                     row.append($('<td>').text(order.date)); // Date create (Cần xử lý định dạng ngày tháng)
                     row.append($('<td>').text(order.total)); // Total
-                    row.append($('<td>').text(order.status)); // Status
+                    row.append($('<td>').text('Đang xử lý')); // Status
 
                     // Thêm dòng vào bảng
                     table.append(row);
