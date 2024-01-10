@@ -136,6 +136,27 @@ public class RSAService {
         privateKey = kf.generatePrivate(keySpec);
     }
 
+    public void importKeyByPem(String pemKey, boolean isPrivateKey) throws Exception {
+        // Remove PEM header and footer, if present
+        pemKey = pemKey.replace("-----BEGIN PUBLIC KEY-----", "")
+                .replace("-----END PUBLIC KEY-----", "")
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s", ""); // Remove any whitespaces
+
+        byte[] byteKey = Base64.getDecoder().decode(pemKey);
+
+        if (isPrivateKey) {
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(byteKey);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            privateKey = kf.generatePrivate(keySpec);
+        } else {
+            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(byteKey);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            publicKey = kf.generatePublic(X509publicKey);
+        }
+    }
+
     public String createPathWithNameExtend(String path, String extend) {
         // Lấy đường dẫn và tên tệp tin từ đường dẫn đầy đủ
         File file = new File(path);

@@ -95,7 +95,54 @@ public class OrderService {
         }
         return list;
     }
+    //Lấy order mới nhất của một người dùng
+    public Order getLastOrder(String username) {
+        Order order = null;
+        String query = "SELECT * FROM `orders` WHERE username = ? ORDER BY id DESC LIMIT 1";
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement(query);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                order = new Order(
+                        resultSet.getInt("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("address"),
+                        resultSet.getString("phone"),
+                        resultSet.getString("email"),
+                        resultSet.getDate("date_create"),
+                        resultSet.getString("status"),
+                        resultSet.getInt("total")
+                );
+            }
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return order;
+    }
+    public String getSignatureOrder(int idOrder) {
+        String query = "SELECT signature_order FROM sign_orders WHERE id_order = ?";
+        try {
+            Connection conn = DBConnect.getInstance().getConnection();
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, idOrder);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                String signatureOrder = rs.getString("signature_order");
+                conn.close();
+                return signatureOrder;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
     public static void main(String[] args) {
-        new OrderService().createOrder("vu", "a", "b", "c", "d", "e","Đang xử lý", 25000);
+        System.out.println(new OrderService().getSignatureOrder(26));
     }
 }
