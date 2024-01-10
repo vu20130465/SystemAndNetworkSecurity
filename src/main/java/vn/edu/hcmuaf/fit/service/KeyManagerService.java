@@ -48,7 +48,28 @@ public class KeyManagerService {
         return result;
     }
 
+    public String getPublicKeyFromUserName(String username) throws SQLException {
+
+
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement("SELECT `key` FROM `key` WHERE username = ? AND expiryDate IS NULL ORDER BY id DESC LIMIT 1");
+            statement.setString(1, username);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("key");
+            }
+
+            return null; // Trả về null nếu không tìm thấy public key cho người dùng
+        } finally {
+            // Đảm bảo đóng tất cả các resource (ResultSet, PreparedStatement, Connection)
+            if (rs != null) rs.close();
+            if (statement != null) statement.close();
+            if (conn != null) conn.close();
+        }
+    }
     public static void main(String[] args) throws SQLException {
-        System.out.println(new KeyManagerService().addKey("vu", "12345679"));
+        System.out.println(new KeyManagerService().getPublicKeyFromUserName("vu"));
     }
 }
