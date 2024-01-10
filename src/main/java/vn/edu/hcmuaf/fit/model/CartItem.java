@@ -1,20 +1,20 @@
 package vn.edu.hcmuaf.fit.model;
 
 public class CartItem {
-    Product Product;
+    Product product;
     int quantity;
 
     public CartItem(Product Product, int quantity) {
-        this.Product = Product;
+        this.product = Product;
         this.quantity = quantity;
     }
 
     public Product getProduct() {
-        return Product;
+        return product;
     }
 
     public void setProduct(Product product) {
-        this.Product = product;
+        this.product = product;
     }
 
     public int getQuantity() {

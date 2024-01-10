@@ -65,7 +65,7 @@
                                 </td>
                                 <td class="quantity-box"><input id="${index.index}" type="number" size="4"
                                                                 value="${item.getQuantity()}"
-                                                                min="1" step="1"
+                                                                min="1" step="1" max="${product.getQuantity()}"
                                                                 class="c-input-text qty text"
                                                                 onchange="addItems(${product.getId()},${price},${cart.size()},this,false)">
                                 </td>
@@ -99,8 +99,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 d-flex shopping-box"><a href="checkout.jsp" class="ml-auto btn hvr-hover">Thanh
-                Toán</a></div>
+            <div class="col-12 d-flex shopping-box">
+                <c:choose>
+                    <c:when test="${cart.size() gt 0}">
+                        <a href="order.jsp" class="ml-auto btn hvr-hover">Thanh Toán</a>
+                    </c:when>
+                    <c:otherwise>
+                        <p class="ml-auto text-danger">Giỏ hàng trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.</p>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
 
     </div>

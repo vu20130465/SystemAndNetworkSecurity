@@ -1,6 +1,7 @@
 package vn.edu.hcmuaf.fit.service;
 
 import vn.edu.hcmuaf.fit.db.DBConnect;
+import vn.edu.hcmuaf.fit.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,4 +51,15 @@ public class AccountService {
         conn.close();
     }
 
+    public User getUserInfo(String username) throws SQLException {
+        conn = DBConnect.getInstance().getConnection();
+        statement = conn.prepareStatement("select username, password, firstname, lastname, phone, address, delivery_address, email, status_id from user where user.username = ?");
+        statement.setString(1, username);
+        rs = statement.executeQuery();
+        User user = null;
+        while (rs.next()) {
+            user = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9));
+        }
+        return user;
+    }
 }

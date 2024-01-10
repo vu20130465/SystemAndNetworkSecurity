@@ -1,8 +1,7 @@
 package vn.edu.hcmuaf.fit.model;
 
-import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Product {
     int id;
@@ -11,11 +10,11 @@ public class Product {
     int discountedPrice;
     String category;
     String description;
-    List<String> images;
+    ArrayList<String> images;
     String status;
     int quantity;
 
-    public Product(int id, String name, int price, int discountedPrice, String category, String description, List<String> images, String status, int quantity) {
+    public Product(int id, String name, int price, int discountedPrice, String category, String description, ArrayList<String> images, String status, int quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -75,11 +74,11 @@ public class Product {
         this.description = description;
     }
 
-    public List<String> getImages() {
+    public ArrayList<String> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(ArrayList<String> images) {
         this.images = images;
     }
 

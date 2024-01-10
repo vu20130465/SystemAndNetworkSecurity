@@ -93,7 +93,12 @@
                             <a class="btn hvr-hover" data-fancybox-close="" style="color: white"
                                onclick="addItem(${product.getId()},${price},<c:out value="${cart.size()}"
                                                                                    default="0"/>,${indexItem},true);
-                               <c:if test="${username!=null}">alert('Đã thêm sản phẩm')</c:if>;<c:if test="${username==null}">window.location.href = 'cart'</c:if>">Thêm
+                               <c:if test="${username!=null}">Swal.fire({
+                                       icon: 'success',
+                                       title: 'Đã thêm sản phẩm',
+                                       showConfirmButton: false,
+                                       timer: 1000
+                                       });</c:if>;<c:if test="${username==null}">window.location.href = 'cart'</c:if>">Thêm
                                 vào giỏ hàng</a>
                         </div>
                     </div>
