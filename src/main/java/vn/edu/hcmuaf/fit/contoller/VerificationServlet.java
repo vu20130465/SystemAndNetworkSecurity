@@ -12,10 +12,12 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "verification", value = "/verification")
 public class VerificationServlet extends HttpServlet {
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        processRequest(request, response);
+        doPost(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
