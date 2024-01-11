@@ -16,7 +16,7 @@ public class VerificationService {
 
             // Lấy public key mới nhất từ người dùng
             KeyManagerService keyManagerService = new KeyManagerService();
-            String publicKeyString = keyManagerService.getPublicKeyFromUserName(username);
+            String publicKeyString = keyManagerService.getKeyByID(keyManagerService.getIdKey(idOrder));
 
             if (publicKeyString == null) {
                 System.out.println("Không tìm thấy public key cho người dùng " + username);
@@ -25,7 +25,7 @@ public class VerificationService {
 
             // Giải mã đoạn hash bằng public key
             RSAService rsaService = new RSAService();
-            rsaService.importKeyByPem(new KeyManagerService().getPublicKeyFromUserName(username),false);
+            rsaService.importKeyFromPem(new KeyManagerService().getPublicKeyFromUserName(username),false);
             String decryptedHash = rsaService.decrypt(encryptedOrder, false);
 
             // Lấy thông tin đơn hàng
@@ -42,5 +42,46 @@ public class VerificationService {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean verifyUser(int idOrder, String username) {
+        // Lấy dữ liệu đã mã hóa từ bảng sign_orders
+        OrderService orderService = new OrderService();
+        String encryptedOrder = orderService.getSignatureOrder(idOrder);
+
+        if (encryptedOrder == null) {
+            System.out.println("Không tìm thấy dữ liệu đã mã hóa cho đơn hàng có ID " + idOrder);
+            return false;
+        }
+
+        // Lấy public key mới nhất từ người dùng
+        KeyManagerService keyManagerService = new KeyManagerService();
+        String publicKeyString = null;
+        try {
+            publicKeyString = keyManagerService.getKeyByID(keyManagerService.getIdKey(idOrder));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (publicKeyString == null) {
+            System.out.println("Không tìm thấy public key cho người dùng " + username);
+            return false;
+        }
+
+        // Giải mã đoạn hash bằng public key
+        RSAService rsaService = new RSAService();
+        try {
+            rsaService.importKeyFromPem(new KeyManagerService().getPublicKeyFromUserName(username),false);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        //nếu giải không được thì trả về false và báo lỗi
+        try {
+            rsaService.decrypt(encryptedOrder, false);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

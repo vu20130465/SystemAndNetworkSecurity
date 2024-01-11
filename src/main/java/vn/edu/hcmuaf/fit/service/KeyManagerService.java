@@ -49,8 +49,6 @@ public class KeyManagerService {
     }
 
     public String getPublicKeyFromUserName(String username) throws SQLException {
-
-
         try {
             conn = DBConnect.getInstance().getConnection();
             statement = conn.prepareStatement("SELECT `key` FROM `key` WHERE username = ? AND expiryDate IS NULL ORDER BY id DESC LIMIT 1");
@@ -68,6 +66,54 @@ public class KeyManagerService {
             if (statement != null) statement.close();
             if (conn != null) conn.close();
         }
+    }
+
+    public String getKeyByID(int keyID) throws SQLException {
+        conn = null;
+        statement = null;
+        rs = null;
+
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement("SELECT key FROM `key` WHERE id = ?");
+            statement.setInt(1, keyID);
+            rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("key");
+            }
+
+            return null; // Trả về null nếu không tìm thấy khóa với ID tương ứng
+        } finally {
+            // Đảm bảo đóng tất cả các resource (ResultSet, PreparedStatement, Connection)
+            try {
+                if (rs != null) rs.close();
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace(); // Xử lý ngoại lệ khi đóng resource
+            }
+        }
+    }
+    public int getIdKey(int idOrder){
+        String query = "SELECT id_key FROM sign_orders WHERE id_order = ?";
+        try {
+            Connection conn = DBConnect.getInstance().getConnection();
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, idOrder);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                int idKey = rs.getInt("id_key");
+                conn.close();
+                return idKey;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
     }
     public static void main(String[] args) throws SQLException {
         System.out.println(new KeyManagerService().getPublicKeyFromUserName("vu"));

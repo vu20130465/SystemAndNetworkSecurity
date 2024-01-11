@@ -136,7 +136,7 @@ public class RSAService {
         privateKey = kf.generatePrivate(keySpec);
     }
 
-    public void importKeyByPem(String pemKey, boolean isPrivateKey) throws Exception {
+    public void importKeyFromPem(String pemKey, boolean isPrivateKey) throws Exception {
         // Remove PEM header and footer, if present
         pemKey = pemKey.replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
