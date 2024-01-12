@@ -27,6 +27,30 @@ function showOrderList(username) {
                 var table = $('#order-table-value'); // ID của bảng HTML
 
                 $.each(data, function (index, order) {
+                    // Tạo đối tượng XMLHttpRequest
+                    var xhr = new XMLHttpRequest();
+                    // Cài đặt phương thức và địa chỉ URL cho yêu cầu
+                    xhr.open("POST", "/verification", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    // Định dạng dữ liệu gửi đi
+                    var data = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
+                    let notificationText = "";
+                    if (xhr.status === 200) {
+                        // Phân tích chuỗi JSON nhận được
+                        var jsonResponse = JSON.parse(xhr.responseText);
+
+                        // Lấy giá trị từ JSON
+                        var isOrderValid = jsonResponse.isOrderValid;
+
+                        // Xử lý dữ liệu theo ý của bạn
+                        if (isOrderValid) {
+                            notificationText = "Đã xác thực"
+                        } else {
+                            notificationText = "Không thể xác thực"
+                        }
+                    }
+                    xhr.send(data);
+
                     // Tạo một dòng trong bảng cho mỗi đơn hàng
                     var row = $('<tr>');
                     row.append($('<td>').text(index + 1)); // STT
@@ -35,7 +59,7 @@ function showOrderList(username) {
                     row.append($('<td>').text(order.address)); // Address
                     row.append($('<td>').text(order.date)); // Date create (Cần xử lý định dạng ngày tháng)
                     row.append($('<td>').text(order.total)); // Total
-                    row.append($('<td>').text(order.status)); // Status
+                    row.append($('<td>').text(notificationText)); // Status
 
                     // Thêm dòng vào bảng
                     table.append(row);

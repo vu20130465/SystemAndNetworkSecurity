@@ -1,5 +1,6 @@
 package vn.edu.hcmuaf.fit.contoller;
 
+import com.google.gson.JsonObject;
 import vn.edu.hcmuaf.fit.service.VerificationService;
 import vn.edu.hcmuaf.fit.service.KeyManagerService;
 
@@ -23,7 +24,7 @@ public class VerificationServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         try {
@@ -34,14 +35,18 @@ public class VerificationServlet extends HttpServlet {
             // Tạo đối tượng VerificationService để xác thực hóa đơn
             VerificationService verificationService = new VerificationService();
 
-            // Xác thực hóa đơn và gửi kết quả về client
-            if (verificationService.verifyOrder(idOrder, username)) {
-                out.println("Hóa đơn xác thực thành công!");
-            } else {
-                out.println("Hóa đơn không hợp lệ!");
-            }
+            // Xác thực hóa đơn và gửi kết quả về client dưới dạng JSON
+            boolean isOrderValid = verificationService.verifyOrder(idOrder, username);
+
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("isOrderValid", isOrderValid);
+
+            out.println(jsonResponse.toString());
         } catch (Exception e) {
-            out.println("Đã xảy ra lỗi: " + e.getMessage());
+            // Xử lý lỗi và gửi thông báo lỗi về client dưới dạng JSON
+            JsonObject errorResponse = new JsonObject();
+            errorResponse.addProperty("error", "Đã xảy ra lỗi: " + e.getMessage());
+            out.println(errorResponse.toString());
         } finally {
             out.close();
         }
