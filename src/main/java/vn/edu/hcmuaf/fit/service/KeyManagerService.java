@@ -95,7 +95,8 @@ public class KeyManagerService {
             }
         }
     }
-    public int getIdKey(int idOrder){
+
+    public int getIdKey(int idOrder) {
         String query = "SELECT id_key FROM sign_orders WHERE id_order = ?";
         try {
             Connection conn = DBConnect.getInstance().getConnection();
@@ -115,6 +116,7 @@ public class KeyManagerService {
 
         return 0;
     }
+
     public static void main(String[] args) throws SQLException {
         System.out.println(new KeyManagerService().getPublicKeyFromUserName("vu"));
     }
