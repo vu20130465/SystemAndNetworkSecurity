@@ -66,7 +66,7 @@ public class OrderService {
         }
         return true;
     }
-// Lấy danh sách đơn hàng của một người dùng
+    // Lấy danh sách đơn hàng của một người dùng
     public ArrayList<Order> getListOrder(String username) {
         ArrayList<Order> list = new ArrayList<>();
         String query = "SELECT * FROM `orders` WHERE username = ? ORDER BY id DESC";
@@ -84,8 +84,7 @@ public class OrderService {
                         resultSet.getString("email"),
                         resultSet.getDate("date_create"),
                         resultSet.getString("status"),
-                        resultSet.getInt("total")
-                        ));
+                        resultSet.getInt("total")));
             }
             conn.close();
         } catch (SQLException e) {
@@ -137,7 +136,6 @@ public class OrderService {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return null;
     }
 
@@ -159,6 +157,7 @@ public class OrderService {
             throw new RuntimeException(e);
         }
     }
+
     public static void main(String[] args) {
         System.out.println(new OrderService().getSignatureOrder(26));
     }
