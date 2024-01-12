@@ -106,54 +106,18 @@ function showOrderList(username) {
             success: function (data) {
                 var table = $('#order-table-value');
                 $.each(data, function (index, order) {
-                    var xhr1 = new XMLHttpRequest();
-                    xhr1.open("POST", "verification", true);
-                    xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    var data1 = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
-                    let notificationText = "";
-                    xhr1.onload = function () {
-                        if (xhr1.status === 200) {
-                            var jsonResponse = JSON.parse(xhr1.responseText);
-                            var isOrderValid = jsonResponse.isOrderValid;
-                            if (isOrderValid) {
-                                notificationText = "Đã xác thực";
-                            } else {
-                                notificationText = "Không thể xác thực";
-                            }
-                            sendVerifyUserRequest();
-                        }
-                    };
-                    xhr1.send(data1);
-
-                    function sendVerifyUserRequest() {
-                        var xhr2 = new XMLHttpRequest();
-                        xhr2.open("POST", "verifyUser", true);
-                        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        var data2 = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
-                        let notificationUserText = "";
-                        xhr2.onload = function () {
-                            if (xhr2.status === 200) {
-                                notificationUserText = "Đã xác thực";
-                            } else {
-                                notificationUserText = "Không thể xác thực";
-                            }
-                            createTableRow();
-                        };
-                        xhr2.send(data2);
-                    }
-
-                    function createTableRow() {
-                        var row = $('<tr>');
-                        row.append($('<td>').text(index + 1));
-                        row.append($('<td>').text(order.id));
-                        row.append($('<td>').text(order.phone));
-                        row.append($('<td>').text(order.address));
-                        row.append($('<td>').text(order.date));
-                        row.append($('<td>').text(order.total));
-                        row.append($('<td>').text(notificationText));
-                        row.append($('<td>').text(notificationUserText));
+                    var row = $('<tr>');
+                    row.append($('<td>').text(index + 1));
+                    row.append($('<td>').text(order.id));
+                    row.append($('<td>').text(order.phone));
+                    row.append($('<td>').text(order.address));
+                    row.append($('<td>').text(order.date));
+                    row.append($('<td>').text(order.total));
+                    // Gọi servlet 'verification' để xác thực đơn hàng và lấy thông báo
+                    verifyOrder(order.id, function(isOrderValid) {
+                        row.append($('<td>').text(isOrderValid ? 'Xác thực' : 'Không toàn vẹn'));
                         table.append(row);
-                    }
+                    });
                 });
             },
             error: function (error) {
@@ -162,7 +126,21 @@ function showOrderList(username) {
         });
     });
 }
-
+// Hàm để gọi servlet 'verification' và lấy thông báo xác thực
+function verifyOrder(idOrder, callback) {
+    $.ajax({
+        url: 'verification',
+        type: 'POST',
+        dataType: 'json',
+        data: { idOrder: idOrder },
+        success: function (data) {
+            callback(data.isOrderValid);
+        },
+        error: function (error) {
+            console.log('Error verifying order: ', error);
+        }
+    });
+}
 
 function editAccount() {
     // Thêm logic để chuyển sang chế độ chỉnh sửa thông tin tài khoản
@@ -196,13 +174,13 @@ function updateKey() {
     let publicKey = forge.pki.publicKeyToPem(forge.pki.setRsaPublicKey(privateKey.n, privateKey.e));
 
     // Dùng AJAX để gửi 1 POST yêu cầu lên server
-    $.post('account-info/key-manager?key=' + publicKey, function(data) {
+    $.post('account-info/key-manager?key=' + publicKey, function (data) {
         if (data === 'success') {
             Swal.fire("Cập nhật key mới");
         } else {
             Swal.fire("Cập nhật không thành công");
         }
-    }).fail(function() {
+    }).fail(function () {
         // This block is executed if the AJAX request fails
         Swal.fire("Cập nhật không thành công");
     });

@@ -62,7 +62,7 @@ public class CreateOrderServlet extends HttpServlet {
             DigitalSignattureManager digit = new DigitalSignattureManager();
 
             orderService.createOrder(username, lName, fName, phone, address, email, shipCost);
-            Order order = orderService.getLastOrder(username);
+            Order order = orderService.getOrder(orderService.getLastOrderId(username), username);
             KeyManagerService key = new KeyManagerService();
             int id_key = key.getReadyKeyID(username);
             System.out.println("idkey"+id_key);

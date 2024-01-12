@@ -127,7 +127,7 @@
                 <th style="width: 15%">Ngày đặt</th>
                 <th style="width: 10%">Tổng giá trị</th>
                 <th style="width: 15%">Trạng thái đơn hàng</th>
-                <th style="width: 10%">Xác minh người đặt</th>
+<%--                <th style="width: 10%">Xác minh người đặt</th>--%>
             </tr>
             </thead>
             <tbody id="order-table-value">

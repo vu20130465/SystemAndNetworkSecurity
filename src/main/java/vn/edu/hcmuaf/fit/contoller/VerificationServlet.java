@@ -30,7 +30,7 @@ public class VerificationServlet extends HttpServlet {
         try {
             // Lấy tham số từ request (idOrder và username)
             int idOrder = Integer.parseInt(request.getParameter("idOrder"));
-            String username = request.getParameter("username");
+            String username = (String) request.getSession().getAttribute("username");
 
             // Tạo đối tượng VerificationService để xác thực hóa đơn
             VerificationService verificationService = new VerificationService();

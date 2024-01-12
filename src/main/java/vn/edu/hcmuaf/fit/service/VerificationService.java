@@ -6,9 +6,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.SQLException;
+import java.util.Base64;
 
 public class VerificationService {
-    public boolean verifyOrder(int idOrder, String username) {
+    public boolean verifyUser(int idOrder, String username) {
         try {
             // Lấy dữ liệu đã mã hóa từ bảng sign_orders
             OrderService orderService = new OrderService();
@@ -33,19 +34,10 @@ public class VerificationService {
             String decryptedHash = rsaService.decrypt(encryptedOrder, false);
 
             // Lấy thông tin đơn hàng
-            Order orderInfo = new OrderService().getLastOrder(username);
-            byte[] orderBytes = null;
-            try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                 ObjectOutputStream oos = new ObjectOutputStream(bos)) {
-                oos.writeObject(orderInfo);
-                oos.flush();
-                orderBytes = bos.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Order orderInfo = new OrderService().getOrder(new OrderService().getLastOrderId(username), username);
 
             // Tính toán đoạn hash của thông tin đơn hàng
-            String orderHash = HashService.hashSHA256(orderBytes);
+            String orderHash = new DigitalSignattureManager().hashOrder(orderInfo);
 
             // So sánh đoạn hash giải mã và đoạn hash tính toán
             return decryptedHash.equals(orderHash);
@@ -55,8 +47,17 @@ public class VerificationService {
             throw new RuntimeException(e);
         }
     }
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 
-    public boolean verifyUser(int idOrder, String username) {
+    public boolean verifyOrder(int idOrder, String username) throws Exception {
         // Lấy dữ liệu đã mã hóa từ bảng sign_orders
         OrderService orderService = new OrderService();
         String encryptedOrder = orderService.getSignatureOrder(idOrder);
@@ -73,17 +74,16 @@ public class VerificationService {
             System.out.println("Không tìm thấy public key cho người dùng " + username);
             return false;
         }
+        Order orderInfo = new OrderService().getOrder(idOrder, username);
 
-        // Giải mã đoạn hash bằng public key
-        RSAService rsaService = new RSAService();
-        try {
-            rsaService.importKeyFromPem(publicKeyString,false);
-            String decryptedHash = rsaService.decrypt(encryptedOrder, false);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+        DigitalSignattureManager digit = new DigitalSignattureManager();
+        String orderHash = new DigitalSignattureManager().hashOrder(orderInfo);
+
+        return digit.verify(orderHash, encryptedOrder, publicKeyString);
     }
 
-
+    public static void main(String[] args) throws Exception {
+        VerificationService verificationService = new VerificationService();
+        System.out.println(verificationService.verifyOrder(37, "vu"));
+    }
 }
