@@ -68,15 +68,16 @@ public class KeyManagerService {
         }
     }
 
-    public String getKeyByID(int keyID) throws SQLException {
+    public String getKeyByIDAndUsername(int keyID, String username) throws SQLException {
         conn = null;
         statement = null;
         rs = null;
 
         try {
             conn = DBConnect.getInstance().getConnection();
-            statement = conn.prepareStatement("SELECT key FROM `key` WHERE id = ?");
+            statement = conn.prepareStatement("SELECT `key` FROM `key` WHERE id = ? AND username = ?");
             statement.setInt(1, keyID);
+            statement.setString(2, username);
             rs = statement.executeQuery();
 
             if (rs.next()) {

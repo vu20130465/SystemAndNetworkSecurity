@@ -27,7 +27,7 @@ function showOrderList(username) {
                 var table = $('#order-table-value'); // ID của bảng HTML
 
                 $.each(data, function (index, order) {
-                    // Tạo đối tượng XMLHttpRequest
+                    // Tạo đối tượng XMLHttpRequest(từ verification)
                     var xhr = new XMLHttpRequest();
                     // Cài đặt phương thức và địa chỉ URL cho yêu cầu
                     xhr.open("POST", "/verification", true);
@@ -59,6 +59,7 @@ function showOrderList(username) {
                     row.append($('<td>').text(order.address)); // Address
                     row.append($('<td>').text(order.date)); // Date create (Cần xử lý định dạng ngày tháng)
                     row.append($('<td>').text(order.total)); // Total
+                    row.append($('<td>').text(notificationText)); // Status
                     row.append($('<td>').text(notificationText)); // Status
 
                     // Thêm dòng vào bảng

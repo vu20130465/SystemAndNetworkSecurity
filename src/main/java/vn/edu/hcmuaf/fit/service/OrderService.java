@@ -3,14 +3,12 @@ package vn.edu.hcmuaf.fit.service;
 import vn.edu.hcmuaf.fit.db.DBConnect;
 import vn.edu.hcmuaf.fit.model.CartItem;
 import vn.edu.hcmuaf.fit.model.Order;
-import vn.edu.hcmuaf.fit.model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class OrderService {
     Connection conn;
@@ -143,7 +141,24 @@ public class OrderService {
         return null;
     }
 
+    public String getKeyByIDOrder(int idOrder, String username){
+        String query = "SELECT id_key FROM sign_orders WHERE id_order = ?";
+        int idKey = 0;
+        try {
+            Connection conn = DBConnect.getInstance().getConnection();
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, idOrder);
+            ResultSet rs = statement.executeQuery();
 
+            if (rs.next()) {
+                idKey = rs.getInt("id_key");
+                conn.close();
+            }
+            return new KeyManagerService().getKeyByIDAndUsername(idKey, username);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static void main(String[] args) {
         System.out.println(new OrderService().getSignatureOrder(26));
     }

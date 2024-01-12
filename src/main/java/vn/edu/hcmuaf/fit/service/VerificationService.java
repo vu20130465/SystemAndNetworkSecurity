@@ -1,5 +1,10 @@
 package vn.edu.hcmuaf.fit.service;
 
+import vn.edu.hcmuaf.fit.model.Order;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.SQLException;
 
 public class VerificationService {
@@ -14,9 +19,8 @@ public class VerificationService {
                 return false;
             }
 
-            // Lấy public key mới nhất từ người dùng
-            KeyManagerService keyManagerService = new KeyManagerService();
-            String publicKeyString = keyManagerService.getKeyByID(keyManagerService.getIdKey(idOrder));
+            // Lấy public key
+            String publicKeyString = new OrderService().getKeyByIDOrder(idOrder, username);
 
             if (publicKeyString == null) {
                 System.out.println("Không tìm thấy public key cho người dùng " + username);
@@ -25,14 +29,23 @@ public class VerificationService {
 
             // Giải mã đoạn hash bằng public key
             RSAService rsaService = new RSAService();
-            rsaService.importKeyFromPem(new KeyManagerService().getPublicKeyFromUserName(username),false);
+            rsaService.importKeyFromPem(publicKeyString,false);
             String decryptedHash = rsaService.decrypt(encryptedOrder, false);
 
             // Lấy thông tin đơn hàng
-            String orderInfo = new OrderService().getLastOrder(username).toString();
+            Order orderInfo = new OrderService().getLastOrder(username);
+            byte[] orderBytes = null;
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                 ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+                oos.writeObject(orderInfo);
+                oos.flush();
+                orderBytes = bos.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             // Tính toán đoạn hash của thông tin đơn hàng
-            String orderHash = HashService.hash(orderInfo, "SHA-2048");
+            String orderHash = HashService.hashSHA256(orderBytes);
 
             // So sánh đoạn hash giải mã và đoạn hash tính toán
             return decryptedHash.equals(orderHash);
@@ -53,14 +66,8 @@ public class VerificationService {
             return false;
         }
 
-        // Lấy public key mới nhất từ người dùng
-        KeyManagerService keyManagerService = new KeyManagerService();
-        String publicKeyString = null;
-        try {
-            publicKeyString = keyManagerService.getKeyByID(keyManagerService.getIdKey(idOrder));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        // Lấy public key
+        String publicKeyString = new OrderService().getKeyByIDOrder(idOrder, username);
 
         if (publicKeyString == null) {
             System.out.println("Không tìm thấy public key cho người dùng " + username);
@@ -70,13 +77,8 @@ public class VerificationService {
         // Giải mã đoạn hash bằng public key
         RSAService rsaService = new RSAService();
         try {
-            rsaService.importKeyFromPem(new KeyManagerService().getPublicKeyFromUserName(username),false);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        //nếu giải không được thì trả về false và báo lỗi
-        try {
-            rsaService.decrypt(encryptedOrder, false);
+            rsaService.importKeyFromPem(publicKeyString,false);
+            String decryptedHash = rsaService.decrypt(encryptedOrder, false);
         } catch (Exception e) {
             return false;
         }

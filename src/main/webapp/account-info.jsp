@@ -121,12 +121,13 @@
             <thead>
             <tr>
                 <th style="width: 5%">STT</th>
-                <th style="width: 5%">ID</th>
-                <th style="width: 10%">Phone</th>
-                <th style="width: 30%">Address</th>
-                <th style="width: 20%">Date create</th>
-                <th style="width: 10%">Total</th>
-                <th style="width: 20%">Status</th>
+                <th style="width: 5%">Mã đơn</th>
+                <th style="width: 10%">Số điện thoại</th>
+                <th style="width: 30%">Địa chỉ</th>
+                <th style="width: 15%">Ngày đặt</th>
+                <th style="width: 10%">Tổng giá trị</th>
+                <th style="width: 15%">Trạng thái đơn hàng</th>
+                <th style="width: 10%">Xác minh người đặt</th>
             </tr>
             </thead>
             <tbody id="order-table-value">
