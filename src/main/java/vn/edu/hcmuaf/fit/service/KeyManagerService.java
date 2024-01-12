@@ -48,7 +48,39 @@ public class KeyManagerService {
         return result;
     }
 
+    public String getPublicKey(int id){
+        String query = "select `key` FROM `key`WHERE id = ? ORDER BY createdDate desc limit 1";
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement(query);
+            statement.setInt(1, id);
+            rs = statement.executeQuery();
+            rs.next();
+            return  rs.getString(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int getIdKey(String username){
+        String query = "select `id` FROM `key`WHERE username = ? ORDER BY createdDate desc limit 1";
+        try {
+            conn = DBConnect.getInstance().getConnection();
+            statement = conn.prepareStatement(query);
+            statement.setString(1, username);
+            rs = statement.executeQuery();
+            rs.next();
+            return  rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
-        System.out.println(new KeyManagerService().addKey("vu", "12345679"));
+        KeyManagerService key = new KeyManagerService();
+//        System.out.println(new KeyManagerService().addKey("vu", "12345679"));
+        int id_key = key.getIdKey("kimanh");
+        System.out.println(id_key);
+        System.out.println(key.getPublicKey(id_key));
     }
 }

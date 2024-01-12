@@ -1,6 +1,6 @@
 package vn.edu.hcmuaf.fit.model;
-
-public class Order_detail {
+import java.io.Serializable;
+public class Order_detail implements Serializable{
     private int id;
     private int order_id;
     private int product_id;

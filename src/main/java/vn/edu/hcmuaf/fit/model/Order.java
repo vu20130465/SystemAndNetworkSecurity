@@ -1,8 +1,10 @@
 package vn.edu.hcmuaf.fit.model;
 
 import java.sql.Date;
-
-public class Order {
+import java.util.ArrayList;
+import java.util.List;
+import java.io.Serializable;
+public class Order implements Serializable{
     private int id;
     private String lname;
     private String fname;
@@ -13,6 +15,7 @@ public class Order {
     private Date date;
     private String status;
     private int total;
+    private List<Order_detail> list_detail = new ArrayList<>();
 
     public Order(int id, String username, String address, String phone, String email, Date date, String status, int total) {
         this.id = id;
@@ -24,22 +27,35 @@ public class Order {
         this.status = status;
         this.total = total;
     }
-    public Order(int id, String username, String address, String phone, String email, Date date, int total) {
+    public Order(int id, String username, String address, String phone, String email, Date date, String status, int total, List<Order_detail> list_detail) {
         this.id = id;
         this.username = username;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.date = date;
+        this.status = status;
         this.total = total;
+        this.list_detail = list_detail;
     }
+
     public Order() {
 
     }
 
     @Override
     public String toString() {
-        return "" + id + ';' + username + ';' + address + ';' + phone + ';' + email + ';' + date.toString() + ';' + status + ';' + total;
+        return "Order{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", date=" + date +
+                ", status='" + status + '\'' +
+                ", total=" + total +
+                ", list_detail=" + list_detail +
+                '}';
     }
 
     public int getId() {
