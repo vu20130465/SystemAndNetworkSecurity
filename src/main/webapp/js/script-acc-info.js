@@ -51,6 +51,30 @@ function showOrderList(username) {
                     }
                     xhr.send(data);
 
+                    var xhr = new XMLHttpRequest();
+
+                    // Cài đặt phương thức và địa chỉ URL cho yêu cầu
+                    xhr.open("POST", "/your-context-path/verifyUser", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                    // Định dạng dữ liệu gửi đi
+                    var data = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
+
+                    // Đặt hàm xử lý sự kiện khi nhận phản hồi
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            // Hiển thị thông báo từ phản hồi
+                            alert(xhr.responseText);
+                        } else {
+                            // Xử lý lỗi nếu có
+                            alert("Đã xảy ra lỗi: " + xhr.statusText);
+                        }
+                    };
+
+                    // Gửi yêu cầu với dữ liệu
+                    xhr.send(data);
+                
+
                     // Tạo một dòng trong bảng cho mỗi đơn hàng
                     var row = $('<tr>');
                     row.append($('<td>').text(index + 1)); // STT
