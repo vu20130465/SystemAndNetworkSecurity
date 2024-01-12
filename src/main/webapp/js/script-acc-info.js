@@ -15,6 +15,87 @@ function showTab(tabName) {
     $('#' + tabName + '-tab').addClass('active');
 }
 
+// function showOrderList(username) {
+//     $(document).ready(function () {
+//         document.getElementById('order-table-value').innerHTML = '';
+//         $.ajax({
+//             url: 'order-list',
+//             type: 'GET',
+//             dataType: 'json',
+//             success: function (data) {
+//                 // Xử lý dữ liệu và hiển thị trong bảng HTML
+//                 var table = $('#order-table-value'); // ID của bảng HTML
+//
+//                 $.each(data, function (index, order) {
+//                     // Tạo đối tượng XMLHttpRequest(từ verification)
+//                     var xhr = new XMLHttpRequest();
+//                     // Cài đặt phương thức và địa chỉ URL cho yêu cầu
+//                     xhr.open("POST", "verification", true);
+//                     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//                     // Định dạng dữ liệu gửi đi
+//                     var data = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
+//                     let notificationText = "";
+//                     if (xhr.status === 200) {
+//                         // Phân tích chuỗi JSON nhận được
+//                         var jsonResponse = JSON.parse(xhr.responseText);
+//
+//                         // Lấy giá trị từ JSON
+//                         var isOrderValid = jsonResponse.isOrderValid;
+//
+//                         // Xử lý dữ liệu theo ý của bạn
+//                         if (isOrderValid) {
+//                             notificationText = "Đã xác thực"
+//                         } else {
+//                             notificationText = "Không thể xác thực"
+//                         }
+//                     }
+//                     xhr.send(data);
+//
+//                     var xhr = new XMLHttpRequest();
+//
+//                     // Cài đặt phương thức và địa chỉ URL cho yêu cầu
+//                     xhr.open("POST", "verifyUser", true);
+//                     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//
+//                     // Định dạng dữ liệu gửi đi
+//                     var data = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
+//                     let notificationUserText = "";
+//                     // Đặt hàm xử lý sự kiện khi nhận phản hồi
+//                     xhr.onload = function () {
+//                         if (xhr.status === 200) {
+//                             // Hiển thị thông báo từ phản hồi
+//                             notificationUserText = "Đã xác thực";
+//                         } else {
+//                             // Xử lý lỗi nếu có
+//                             notificationUserText = "Không thể xác thực";
+//                         }
+//                     };
+//
+//                     // Gửi yêu cầu với dữ liệu
+//                     xhr.send(data);
+//
+//
+//                     // Tạo một dòng trong bảng cho mỗi đơn hàng
+//                     var row = $('<tr>');
+//                     row.append($('<td>').text(index + 1)); // STT
+//                     row.append($('<td>').text(order.id)); // ID
+//                     row.append($('<td>').text(order.phone)); // Phone
+//                     row.append($('<td>').text(order.address)); // Address
+//                     row.append($('<td>').text(order.date)); // Date create (Cần xử lý định dạng ngày tháng)
+//                     row.append($('<td>').text(order.total)); // Total
+//                     row.append($('<td>').text(notificationText)); // Status
+//                     row.append($('<td>').text(notificationUserText)); // Status
+//
+//                     // Thêm dòng vào bảng
+//                     table.append(row);
+//                 });
+//             },
+//             error: function (error) {
+//                 console.log('Error fetching data: ', error);
+//             }
+//         });
+//     });
+// }
 function showOrderList(username) {
     $(document).ready(function () {
         document.getElementById('order-table-value').innerHTML = '';
@@ -23,71 +104,56 @@ function showOrderList(username) {
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                // Xử lý dữ liệu và hiển thị trong bảng HTML
-                var table = $('#order-table-value'); // ID của bảng HTML
-
+                var table = $('#order-table-value');
                 $.each(data, function (index, order) {
-                    // Tạo đối tượng XMLHttpRequest(từ verification)
-                    var xhr = new XMLHttpRequest();
-                    // Cài đặt phương thức và địa chỉ URL cho yêu cầu
-                    xhr.open("POST", "/verification", true);
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    // Định dạng dữ liệu gửi đi
-                    var data = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
+                    var xhr1 = new XMLHttpRequest();
+                    xhr1.open("POST", "verification", true);
+                    xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    var data1 = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
                     let notificationText = "";
-                    if (xhr.status === 200) {
-                        // Phân tích chuỗi JSON nhận được
-                        var jsonResponse = JSON.parse(xhr.responseText);
-
-                        // Lấy giá trị từ JSON
-                        var isOrderValid = jsonResponse.isOrderValid;
-
-                        // Xử lý dữ liệu theo ý của bạn
-                        if (isOrderValid) {
-                            notificationText = "Đã xác thực"
-                        } else {
-                            notificationText = "Không thể xác thực"
-                        }
-                    }
-                    xhr.send(data);
-
-                    var xhr = new XMLHttpRequest();
-
-                    // Cài đặt phương thức và địa chỉ URL cho yêu cầu
-                    xhr.open("POST", "/your-context-path/verifyUser", true);
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-                    // Định dạng dữ liệu gửi đi
-                    var data = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
-
-                    // Đặt hàm xử lý sự kiện khi nhận phản hồi
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            // Hiển thị thông báo từ phản hồi
-                            alert(xhr.responseText);
-                        } else {
-                            // Xử lý lỗi nếu có
-                            alert("Đã xảy ra lỗi: " + xhr.statusText);
+                    xhr1.onload = function () {
+                        if (xhr1.status === 200) {
+                            var jsonResponse = JSON.parse(xhr1.responseText);
+                            var isOrderValid = jsonResponse.isOrderValid;
+                            if (isOrderValid) {
+                                notificationText = "Đã xác thực";
+                            } else {
+                                notificationText = "Không thể xác thực";
+                            }
+                            sendVerifyUserRequest();
                         }
                     };
+                    xhr1.send(data1);
 
-                    // Gửi yêu cầu với dữ liệu
-                    xhr.send(data);
-                
+                    function sendVerifyUserRequest() {
+                        var xhr2 = new XMLHttpRequest();
+                        xhr2.open("POST", "verifyUser", true);
+                        xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        var data2 = "idOrder=" + encodeURIComponent(order.id) + "&username=" + encodeURIComponent(username);
+                        let notificationUserText = "";
+                        xhr2.onload = function () {
+                            if (xhr2.status === 200) {
+                                notificationUserText = "Đã xác thực";
+                            } else {
+                                notificationUserText = "Không thể xác thực";
+                            }
+                            createTableRow();
+                        };
+                        xhr2.send(data2);
+                    }
 
-                    // Tạo một dòng trong bảng cho mỗi đơn hàng
-                    var row = $('<tr>');
-                    row.append($('<td>').text(index + 1)); // STT
-                    row.append($('<td>').text(order.id)); // ID
-                    row.append($('<td>').text(order.phone)); // Phone
-                    row.append($('<td>').text(order.address)); // Address
-                    row.append($('<td>').text(order.date)); // Date create (Cần xử lý định dạng ngày tháng)
-                    row.append($('<td>').text(order.total)); // Total
-                    row.append($('<td>').text(notificationText)); // Status
-                    row.append($('<td>').text(notificationText)); // Status
-
-                    // Thêm dòng vào bảng
-                    table.append(row);
+                    function createTableRow() {
+                        var row = $('<tr>');
+                        row.append($('<td>').text(index + 1));
+                        row.append($('<td>').text(order.id));
+                        row.append($('<td>').text(order.phone));
+                        row.append($('<td>').text(order.address));
+                        row.append($('<td>').text(order.date));
+                        row.append($('<td>').text(order.total));
+                        row.append($('<td>').text(notificationText));
+                        row.append($('<td>').text(notificationUserText));
+                        table.append(row);
+                    }
                 });
             },
             error: function (error) {
@@ -96,6 +162,7 @@ function showOrderList(username) {
         });
     });
 }
+
 
 function editAccount() {
     // Thêm logic để chuyển sang chế độ chỉnh sửa thông tin tài khoản
@@ -127,7 +194,16 @@ function updateKey() {
     //Tạo public key bằng private key
     var privateKey = forge.pki.privateKeyFromPem($('#private-key').val());
     let publicKey = forge.pki.publicKeyToPem(forge.pki.setRsaPublicKey(privateKey.n, privateKey.e));
-    document.getElementById('public-key').value = publicKey;
-    $.post('account-info/key-manager?key=' + publicKey);
-    Swal.fire("Cập nhật key mới");
+
+    // Dùng AJAX để gửi 1 POST yêu cầu lên server
+    $.post('account-info/key-manager?key=' + publicKey, function(data) {
+        if (data === 'success') {
+            Swal.fire("Cập nhật key mới");
+        } else {
+            Swal.fire("Cập nhật không thành công");
+        }
+    }).fail(function() {
+        // This block is executed if the AJAX request fails
+        Swal.fire("Cập nhật không thành công");
+    });
 }

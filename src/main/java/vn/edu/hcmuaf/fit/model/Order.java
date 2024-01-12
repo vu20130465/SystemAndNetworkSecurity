@@ -13,28 +13,25 @@ public class Order implements Serializable{
     private String phone;
     private String email;
     private Date date;
-    private String status;
     private int total;
     private List<Order_detail> list_detail = new ArrayList<>();
 
-    public Order(int id, String username, String address, String phone, String email, Date date, String status, int total) {
+    public Order(int id, String username, String address, String phone, String email, Date date, int total) {
         this.id = id;
         this.username = username;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.date = date;
-        this.status = status;
         this.total = total;
     }
-    public Order(int id, String username, String address, String phone, String email, Date date, String status, int total, List<Order_detail> list_detail) {
+    public Order(int id, String username, String address, String phone, String email, Date date, int total, List<Order_detail> list_detail) {
         this.id = id;
         this.username = username;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.date = date;
-        this.status = status;
         this.total = total;
         this.list_detail = list_detail;
     }
@@ -52,7 +49,6 @@ public class Order implements Serializable{
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", date=" + date +
-                ", status='" + status + '\'' +
                 ", total=" + total +
                 ", list_detail=" + list_detail +
                 '}';
@@ -104,14 +100,6 @@ public class Order implements Serializable{
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public int getTotal() {

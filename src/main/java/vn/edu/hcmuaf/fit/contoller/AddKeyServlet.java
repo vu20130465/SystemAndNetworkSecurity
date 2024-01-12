@@ -25,10 +25,13 @@ public class AddKeyServlet extends HttpServlet {
         }
         String key = req.getParameter("key");
         try {
-            new KeyManagerService().addKey(username, key);
+            if (new KeyManagerService().addKey(username, key)) {
+                resp.getWriter().write("success");
+            } else {
+                resp.getWriter().write("failure");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

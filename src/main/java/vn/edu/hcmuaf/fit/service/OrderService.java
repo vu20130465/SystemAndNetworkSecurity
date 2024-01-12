@@ -15,8 +15,8 @@ public class OrderService {
     PreparedStatement statement;
     ResultSet resultSet;
 
-    public boolean createOrder(String username, String lName, String fName, String phone, String address, String email, String status, int shipCost) {
-        String query1 = "INSERT INTO `orders` (username, lastname, firstname, phone, address, email, status) VALUES (?,?,?,?,?,?,?)";
+    public boolean createOrder(String username, String lName, String fName, String phone, String address, String email, int shipCost) {
+        String query1 = "INSERT INTO `orders` (username, lastname, firstname, phone, address, email) VALUES (?,?,?,?,?,?)";
         String query2 = "INSERT INTO `order_details` (order_id, product_id, quantity, price) VALUES ((SELECT id FROM `orders` WHERE username = ? ORDER BY id DESC LIMIT 1),?,?,?)";
         String queryDeleteCart = "DELETE FROM cart WHERE user_id = (SELECT id FROM `user` WHERE username = ?)";
 
@@ -29,7 +29,6 @@ public class OrderService {
             statement.setString(4, phone);
             statement.setString(5, address);
             statement.setString(6, email);
-            statement.setString(7, status);
             statement.executeUpdate();
             statement.close();
 
@@ -83,7 +82,6 @@ public class OrderService {
                         resultSet.getString("phone"),
                         resultSet.getString("email"),
                         resultSet.getDate("date_create"),
-                        resultSet.getString("status"),
                         resultSet.getInt("total")));
             }
             conn.close();
@@ -109,7 +107,6 @@ public class OrderService {
                         resultSet.getString("phone"),
                         resultSet.getString("email"),
                         resultSet.getDate("date_create"),
-                        resultSet.getString("status"),
                         resultSet.getInt("total")
                 );
             }

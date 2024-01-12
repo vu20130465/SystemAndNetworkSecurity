@@ -91,7 +91,7 @@ public class RSAService {
         Date date = new Date(Long.parseLong(st.nextToken()));
         String status = st.nextToken();
         int total = Integer.parseInt(st.nextToken());
-        return new Order(id, username, address, phone, email, date, status, total);
+        return new Order(id, username, address, phone, email, date, total);
     }
     public void fileDecrypt(String inputPath, boolean isPrivateKey) throws Exception {
         DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(Paths.get(inputPath))));
@@ -142,7 +142,7 @@ public class RSAService {
                 .replace("-----END PUBLIC KEY-----", "")
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
-                .replaceAll("\\s", ""); // Remove any whitespaces
+                .replaceAll("\\s", "+"); // Remove any whitespaces
 
         byte[] byteKey = Base64.getDecoder().decode(pemKey);
 
@@ -173,18 +173,20 @@ public class RSAService {
 
     public static void main(String[] args) throws Exception {
         RSAService rsa = new RSAService();
-        rsa.genKey(3072);
+        rsa.importKeyFromPem("-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqUYhOZoO55HS0M63i4WCQ/6eIvrqkWPi/qxSpS7u4AvJeb53B3b92hhRT3Rk4T3/rjuV/C i9XO386zhevXi3Z ykUPfVSsWa5J94jSLT5Uul1v44tP3EkHX0NEZ9U39ecrsXFjFbVVdzM5wHG3fb4gOqX1mTQuo7hE5mY5VSH4hrDZQa85SfSBsabGAI KQUVrYECxwSbsMiBbjaiAHFOBfEahzc3dMZkpe/CD2whBWI/lMoaXZU7FahukClw1XpLIO5uq3PDbWW6OL9pmJshDpKD5JCBrcCpqlVVKa276 0dnzfcMbTe2 nLLGED4Ks3ipsYrKJCq1bNMdwYRx9wIDAQAB-----END PUBLIC KEY-----", false);
+        System.out.println(rsa.exportPublicKey());
+//        rsa.genKey(3072);
 //        System.out.println(rsa.exportPublicKey());
 //        System.out.println(rsa.exportPrivateKey());
-        Order o = new Order(1, "test", "test", "test", "test", new Date(System.currentTimeMillis()), "Đang xử lý", 1);
-        String s = rsa.encryptObject(o, true);
-        System.out.println(s);
-        Order f1 = rsa.decryptObject(s, true);
-        System.out.println(f1);
-//        System.out.println(rsa.encrypt("test", false));
-//        System.out.println(rsa.decrypt(rsa.encrypt("test", false), false));
-
-//        rsa.fileEncrypt("web_ban_trai_cay.sql", false);
-//        rsa.fileDecrypt("web_ban_trai_cay-encrypt.sql", false);
+//        Order o = new Order(1, "test", "test", "test", "test", new Date(System.currentTimeMillis()), "Đang xử lý", 1);
+//        String s = rsa.encryptObject(o, true);
+//        System.out.println(s);
+//        Order f1 = rsa.decryptObject(s, true);
+//        System.out.println(f1);
+////        System.out.println(rsa.encrypt("test", false));
+////        System.out.println(rsa.decrypt(rsa.encrypt("test", false), false));
+//
+////        rsa.fileEncrypt("web_ban_trai_cay.sql", false);
+////        rsa.fileDecrypt("web_ban_trai_cay-encrypt.sql", false);
     }
 }
