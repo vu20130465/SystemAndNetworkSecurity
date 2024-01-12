@@ -42,32 +42,6 @@ public class RSAService {
         byte[] output = cipher.doFinal(input.toString().getBytes(StandardCharsets.UTF_8));
         return Base64.getEncoder().encodeToString(output);
     }
-    public void fileEncrypt(String inputPath, boolean isPublicKey) throws Exception {
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(256);
-        byte[] iv = new byte[16];
-        IvParameterSpec spec = new IvParameterSpec(iv);
-        SecretKey secretKey = keyGen.generateKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, spec);
-
-        CipherInputStream is = new CipherInputStream(new BufferedInputStream(Files.newInputStream(Paths.get(inputPath))), cipher);
-        DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(Paths.get(createPathWithNameExtend(inputPath, "encrypt")))));
-
-        String keyString = Base64.getEncoder().encodeToString(secretKey.getEncoded());
-        dos.writeUTF(encrypt(keyString, isPublicKey));
-        dos.writeLong(new File(inputPath).length());
-        dos.writeUTF(Base64.getEncoder().encodeToString(iv));
-
-        byte[] buff = new byte[1024];
-        int i;
-        while ((i = is.read(buff)) != -1) {
-            dos.write(buff, 0, i);
-        }
-        dos.flush();
-        dos.close();
-        is.close();
-    }
 
 
     public String decrypt(String data, boolean isPrivateKey) throws Exception {
@@ -93,26 +67,6 @@ public class RSAService {
         int total = Integer.parseInt(st.nextToken());
         return new Order(id, username, address, phone, email, date, status, total);
     }
-    public void fileDecrypt(String inputPath, boolean isPrivateKey) throws Exception {
-        DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(Paths.get(inputPath))));
-        String keyString = dis.readUTF();
-        long size = dis.readLong();
-        String ivString = dis.readUTF();
-
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Base64.getDecoder().decode(decrypt(keyString, isPrivateKey)), "AES"), new IvParameterSpec(Base64.getDecoder().decode(ivString)));
-
-        CipherOutputStream cos = new CipherOutputStream(new BufferedOutputStream(Files.newOutputStream(Paths.get(createPathWithNameExtend(inputPath, "decrypt")))), cipher);
-
-        byte[] buff = new byte[1024];
-        int i;
-        while ((i = dis.read(buff)) != -1) {
-            cos.write(buff, 0, i);
-        }
-        cos.flush();
-        cos.close();
-        dis.close();
-    }
 
     public String exportPublicKey() throws Exception {
         return Base64.getEncoder().encodeToString(publicKey.getEncoded());
@@ -135,35 +89,9 @@ public class RSAService {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         privateKey = kf.generatePrivate(keySpec);
     }
-
-    public String createPathWithNameExtend(String path, String extend) {
-        // Lấy đường dẫn và tên tệp tin từ đường dẫn đầy đủ
-        File file = new File(path);
-        String parentPath = file.getParent();
-        String fileName = file.getName();
-        // Tách tên tệp tin và đuôi mở rộng
-        int dotIndex = fileName.lastIndexOf('.');
-        String baseName = fileName.substring(0, dotIndex);
-        String extension = fileName.substring(dotIndex + 1);
-        // Tạo tên mới
-        String newName = baseName + "-" + extend + "." + extension;
-        return parentPath != null ? parentPath + File.separator + newName : newName;
-    }
-
     public static void main(String[] args) throws Exception {
         RSAService rsa = new RSAService();
         rsa.genKey(3072);
-//        System.out.println(rsa.exportPublicKey());
-//        System.out.println(rsa.exportPrivateKey());
-        Order o = new Order(1, "test", "test", "test", "test", new Date(System.currentTimeMillis()), "Đang xử lý", 1);
-        String s = rsa.encryptObject(o, true);
-        System.out.println(s);
-        Order f1 = rsa.decryptObject(s, true);
-        System.out.println(f1);
-//        System.out.println(rsa.encrypt("test", false));
-//        System.out.println(rsa.decrypt(rsa.encrypt("test", false), false));
-
-//        rsa.fileEncrypt("web_ban_trai_cay.sql", false);
-//        rsa.fileDecrypt("web_ban_trai_cay-encrypt.sql", false);
+        System.out.println(rsa.exportPublicKey());
     }
 }

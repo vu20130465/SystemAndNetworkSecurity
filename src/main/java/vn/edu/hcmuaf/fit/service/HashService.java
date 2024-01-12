@@ -1,11 +1,14 @@
 package vn.edu.hcmuaf.fit.service;
 
+import vn.edu.hcmuaf.fit.model.Order;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigInteger;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 
 public class HashService {
     public static String hash(String data, String algorithm) throws Exception {
@@ -17,6 +20,18 @@ public class HashService {
     //hash password bằng sha 256
     public static String hashPassword(String password) throws Exception {
         return hash(password, "SHA-256");
+    }
+    public static String hashOrderNewAdded(String username) throws Exception {
+        OrderService orderService = new OrderService();
+        Order order = orderService.getLastOrder(username);
+        StringBuilder orderString = new StringBuilder(order.toString());
+        ArrayList<Order> orders = orderService.getListOrder(username);
+        for (Order o :
+                orders) {
+                orderString.append(";");
+                orderString.append(o.toString());
+        }
+        return hash(orderString.toString(), "SHA-512");
     }
     //check password
     public static boolean checkPassword(String password, String hash) throws Exception {

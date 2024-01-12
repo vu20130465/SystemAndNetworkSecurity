@@ -24,7 +24,7 @@ function showOrderList(username) {
             dataType: 'json',
             success: function (data) {
                 // Xử lý dữ liệu và hiển thị trong bảng HTML
-                var table = $('#order-table-value'); // ID của bảng HTML
+                let table = $('#order-table-value'); // ID của bảng HTML
 
                 $.each(data, function (index, order) {
                     // Tạo một dòng trong bảng cho mỗi đơn hàng
@@ -60,8 +60,8 @@ function changePassword() {
 
 function createKey() {
     // Thêm logic để tạo key
-    var rsa = forge.pki.rsa;
-    var keyPair = rsa.generateKeyPair({bits: 2048, e: 0x10001});
+    let rsa = forge.pki.rsa;
+    let keyPair = rsa.generateKeyPair({bits: 2048, e: 0x10001});
 
     $('#private-key').val(forge.pki.privateKeyToPem(keyPair.privateKey));
     $('#public-key').val(forge.pki.publicKeyToPem(keyPair.publicKey));
@@ -76,7 +76,7 @@ function reportLostKey() {
 
 function updateKey() {
     //Tạo public key bằng private key
-    var privateKey = forge.pki.privateKeyFromPem($('#private-key').val());
+    let privateKey = forge.pki.privateKeyFromPem($('#private-key').val());
     let publicKey = forge.pki.publicKeyToPem(forge.pki.setRsaPublicKey(privateKey.n, privateKey.e));
     document.getElementById('public-key').value = publicKey;
     $.post('account-info/key-manager?key=' + publicKey);

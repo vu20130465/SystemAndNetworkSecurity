@@ -232,7 +232,7 @@
                     </div>
                     <input type="hidden" name="selectedShippingOption" id="selectedShippingOption" value="">
 
-                    <button class="col-12 d-flex shopping-box" style="border: none;background: none;" type="submit">
+                    <button class="col-12 d-flex shopping-box" style="border: none;background: none;" type="submit" onclick="submitForm()">
                         <a
                                 class="ml-auto btn hvr-hover">Đặt hàng</a></button>
                 </div>
